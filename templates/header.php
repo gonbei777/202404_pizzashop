@@ -1,8 +1,15 @@
 <?php
 
-var_dump($_SERVER['REQUEST_URI']);
-
 $title = 'ピッツェリア インタープラン';
+
+$num = strrpos($_SERVER['REQUEST_URI'], '/');
+$filename = substr($_SERVER['REQUEST_URI'], $num + 1);
+
+switch ($filename) {
+  case 'add.php':
+    $title = 'ピザの登録';
+    break;
+}
 
 
 ?>
