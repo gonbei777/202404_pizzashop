@@ -1,6 +1,9 @@
 <?php
 
-var_dump($_POST);
+if (isset($_POST['submit'])) {
+  var_dump($_POST);
+}
+
 
 require './templates/header.php';
 // include './templates/header.php';
@@ -21,8 +24,42 @@ require './templates/header.php';
             <label for="chef" class="form-label">シェフの名前</label>
             <input type="text" name="chef" id="chef" class="form-control">
           </div>
+          <div class="mb-3">
+            <p>トッピング</p>
+            <!-- tomato, cheese, basil, corn, mushroom -->
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="トマト" id="tomato" name="topping[]">
+              <label class="form-check-label" for="tomato">
+                トマト
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="水牛モッツァレラチーズ" id="cheese" name="topping[]">
+              <label class="form-check-label" for="cheese">
+                水牛モッツァレラチーズ
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="バジル" id="basil" name="topping[]">
+              <label class="form-check-label" for="basil">
+                バジル
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="コーン" id="corn" name="topping[]">
+              <label class="form-check-label" for="corn">
+                コーン
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="マッシュルーム" id="mushroom" name="topping[]">
+              <label class="form-check-label" for="mushroom">
+                マッシュルーム
+              </label>
+            </div>
+          </div>
           <div class="text-center">
-            <button type="submit" class="btn btn-primary">送信する</button>
+            <button type="submit" class="btn btn-primary" name="submit">送信する</button>
           </div>
         </form>
       </div>
