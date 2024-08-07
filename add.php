@@ -1,7 +1,36 @@
 <?php
 
+// エラーメッセージ
+$errors = [
+  'pizza' => '',
+  'chef' => '',
+];
+
+//送信チェック
 if (isset($_POST['submit'])) {
   var_dump($_POST);
+
+  $check_keys = ['pizza', 'chef'];
+  foreach ($check_keys as $key) {
+    $_POST[$key] = trim(mb_convert_kana($_POST[$key], 's'));
+  }
+
+  var_dump($_POST);
+
+  // 検証(必須項目)
+  if (empty($_POST['pizza'])) {
+    // echo 'ピザの名前を入力してください。';
+    $errors['pizza'] = 'ピザの名前を入力してください。';
+  } elseif (!preg_match('/^([^\x01-\x7E]|[\da-zA-Z ])+$/', $_POST['pizza'])) {
+    // echo '文字は正しく入力してください。';
+    $errors['pizza'] = '文字は正しく入力してください。';
+  }
+
+  if (empty($_POST['chef'])) {
+    echo 'シェフの名前を入力してください。';
+  } elseif (!preg_match('/^([^\x01-\x7E]|[\da-zA-Z ])+$/', $_POST['chef'])) {
+    echo '文字は正しく入力してください。';
+  }
 }
 
 
