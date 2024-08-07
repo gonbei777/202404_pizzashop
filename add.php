@@ -6,6 +6,20 @@ $errors = [
   'chef' => '',
 ];
 
+// 入力値再反映用
+$pizza = '';
+$chef = '';
+
+// チェックボックス用関数
+function checkbox_value_exists($value)
+{
+  if (!array_key_exists('topping', $_POST)) return;
+
+  if (in_array($value, $_POST['topping'])) {
+    echo 'checked';
+  }
+}
+
 //送信チェック
 if (isset($_POST['submit'])) {
 
@@ -16,7 +30,8 @@ if (isset($_POST['submit'])) {
     $_POST[$key] = trim(mb_convert_kana($_POST[$key], 's'));
   }
 
-  var_dump($_POST);
+  $pizza = $_POST['pizza'];
+  $chef = $_POST['chef'];
 
   // 検証(必須項目)
   if (empty($_POST['pizza'])) {
@@ -53,7 +68,7 @@ require './templates/header.php';
             <?php
             $is_invalid = !empty($errors['pizza']) ? 'is-invalid' : '';
             ?>
-            <input type="text" name="pizza" id="pizza" class="form-control <?= $is_invalid; ?>">
+            <input type="text" name="pizza" id="pizza" class="form-control <?= $is_invalid; ?>" value="<?= $pizza; ?>">
             <p class="invalid-feedback"><?= $errors['pizza']; ?></p>
           </div>
           <div class="mb-3">
@@ -61,14 +76,14 @@ require './templates/header.php';
             <?php
             $is_invalid = !empty($errors['chef']) ? 'is-invalid' : '';
             ?>
-            <input type="text" name="chef" id="chef" class="form-control <?= $is_invalid; ?>">
+            <input type="text" name="chef" id="chef" class="form-control <?= $is_invalid; ?>" value="<?= $chef; ?>">
             <p class="invalid-feedback"><?= $errors['chef']; ?></p>
           </div>
           <div class="mb-3">
             <p>トッピング</p>
             <!-- tomato, cheese, basil, corn, mushroom -->
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="トマト" id="tomato" name="topping[]">
+              <input class="form-check-input" type="checkbox" value="トマト" id="tomato" name="topping[]" <?php checkbox_value_exists("トマト") ?>>
               <label class="form-check-label" for="tomato">
                 トマト
               </label>
