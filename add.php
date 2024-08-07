@@ -49,6 +49,15 @@ if (isset($_POST['submit'])) {
     // echo '文字は正しく入力してください。';
     $errors['chef'] = '文字は正しく入力してください。';
   }
+
+  // エラーチェック(エラーなければ)
+  if (!array_filter($errors)) {
+    // echo 'エラーはありません';
+
+    // リダイレクト
+    header('Location:pizza.php');
+    exit; // die;
+  }
 }
 
 
@@ -68,7 +77,7 @@ require './templates/header.php';
             <?php
             $is_invalid = !empty($errors['pizza']) ? 'is-invalid' : '';
             ?>
-            <input type="text" name="pizza" id="pizza" class="form-control <?= $is_invalid; ?>" value="<?= $pizza; ?>">
+            <input type="text" name="pizza" id="pizza" class="form-control <?= $is_invalid; ?>" value="<?= htmlspecialchars($pizza); ?>">
             <p class="invalid-feedback"><?= $errors['pizza']; ?></p>
           </div>
           <div class="mb-3">
@@ -76,7 +85,7 @@ require './templates/header.php';
             <?php
             $is_invalid = !empty($errors['chef']) ? 'is-invalid' : '';
             ?>
-            <input type="text" name="chef" id="chef" class="form-control <?= $is_invalid; ?>" value="<?= $chef; ?>">
+            <input type="text" name="chef" id="chef" class="form-control <?= $is_invalid; ?>" value="<?= htmlspecialchars($chef); ?>">
             <p class="invalid-feedback"><?= $errors['chef']; ?></p>
           </div>
           <div class="mb-3">
@@ -89,25 +98,25 @@ require './templates/header.php';
               </label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="水牛モッツァレラチーズ" id="cheese" name="topping[]">
+              <input class="form-check-input" type="checkbox" value="水牛モッツァレラチーズ" id="cheese" name="topping[]" <?php checkbox_value_exists("水牛モッツァレラチーズ") ?>>
               <label class="form-check-label" for="cheese">
                 水牛モッツァレラチーズ
               </label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="バジル" id="basil" name="topping[]">
+              <input class="form-check-input" type="checkbox" value="バジル" id="basil" name="topping[]" <?php checkbox_value_exists("バジル") ?>>
               <label class="form-check-label" for="basil">
                 バジル
               </label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="コーン" id="corn" name="topping[]">
+              <input class="form-check-input" type="checkbox" value="コーン" id="corn" name="topping[]" <?php checkbox_value_exists("コーン") ?>>
               <label class="form-check-label" for="corn">
                 コーン
               </label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="マッシュルーム" id="mushroom" name="topping[]">
+              <input class="form-check-input" type="checkbox" value="マッシュルーム" id="mushroom" name="topping[]" <?php checkbox_value_exists("マッシュルーム") ?>>
               <label class="form-check-label" for="mushroom">
                 マッシュルーム
               </label>
