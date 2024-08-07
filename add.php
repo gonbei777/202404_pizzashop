@@ -8,6 +8,7 @@ $errors = [
 
 //送信チェック
 if (isset($_POST['submit'])) {
+
   var_dump($_POST);
 
   $check_keys = ['pizza', 'chef'];
@@ -27,9 +28,11 @@ if (isset($_POST['submit'])) {
   }
 
   if (empty($_POST['chef'])) {
-    echo 'シェフの名前を入力してください。';
+    // echo 'シェフの名前を入力してください。';
+    $errors['chef'] = 'シェフの名前を入力してください。';
   } elseif (!preg_match('/^([^\x01-\x7E]|[\da-zA-Z ])+$/', $_POST['chef'])) {
-    echo '文字は正しく入力してください。';
+    // echo '文字は正しく入力してください。';
+    $errors['chef'] = '文字は正しく入力してください。';
   }
 }
 
@@ -47,11 +50,19 @@ require './templates/header.php';
         <form action="" method="post">
           <div class="mb-3">
             <label for="pizza" class="form-label">ピザの名前</label>
-            <input type="text" name="pizza" id="pizza" class="form-control">
+            <?php
+            $is_invalid = !empty($errors['pizza']) ? 'is-invalid' : '';
+            ?>
+            <input type="text" name="pizza" id="pizza" class="form-control <?= $is_invalid; ?>">
+            <p class="invalid-feedback"><?= $errors['pizza']; ?></p>
           </div>
           <div class="mb-3">
             <label for="chef" class="form-label">シェフの名前</label>
-            <input type="text" name="chef" id="chef" class="form-control">
+            <?php
+            $is_invalid = !empty($errors['chef']) ? 'is-invalid' : '';
+            ?>
+            <input type="text" name="chef" id="chef" class="form-control <?= $is_invalid; ?>">
+            <p class="invalid-feedback"><?= $errors['chef']; ?></p>
           </div>
           <div class="mb-3">
             <p>トッピング</p>
