@@ -1,5 +1,8 @@
 <?php
 
+// DB接続
+require './templates/db.php';
+
 // エラーメッセージ
 $errors = [
   'pizza' => '',
@@ -22,8 +25,6 @@ function checkbox_value_exists($value)
 
 //送信チェック
 if (isset($_POST['submit'])) {
-
-  var_dump($_POST);
 
   $check_keys = ['pizza', 'chef'];
   foreach ($check_keys as $key) {
@@ -52,11 +53,30 @@ if (isset($_POST['submit'])) {
 
   // エラーチェック(エラーなければ)
   if (!array_filter($errors)) {
-    // echo 'エラーはありません';
+    // トッピングの存在チェック
+    if (array_key_exists('topping', $_POST)) {
+      $topping = implode(',', $_POST['topping']);
+      $sql = 'INSERT INTO pizzas (pizza, chef, topping) VALUES (?, ?, ?)';
+    } else {
+      $sql = 'INSERT INTO pizzas (pizza, chef) VALUES (?, ?)';
+    }
 
-    // リダイレクト
-    header('Location:pizza.php');
-    exit; // die;
+    // DBへの登録
+    $stmt = $db->prepare($sql);
+    $stmt->bindValue(1, $_POST['pizza']);
+    $stmt->bindValue(2, $_POST['chef']);
+    if (isset($topping)) {
+      $stmt->bindValue(3, $topping);
+    }
+    $result = $stmt->execute(); //true | false
+
+    if ($result) {
+      // リダイレクト
+      header('Location:pizza.php');
+      exit; // die;
+    } else {
+      echo 'DBへの登録に失敗しました。';
+    }
   }
 }
 
