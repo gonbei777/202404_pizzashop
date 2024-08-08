@@ -47,7 +47,7 @@ require './templates/header.php';
                 </div>
                 <h3 class="card-title h5"><?= $pizza['pizza']; ?></h3>
                 <p class="card-text"><?= $pizza['topping']; ?></p>
-                <a href="" class="btn btn-primary">詳細</a>
+                <a href="detail.php?id=<?= $pizza['id']; ?>" class="btn btn-primary">詳細</a>
               </div>
             </div>
           </div>
