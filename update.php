@@ -183,6 +183,7 @@ require './templates/header.php';
             </div>
           </div>
           <div class="text-center">
+            <input type="hidden" name="id" value="<?= htmlspecialchars($_GET['id']); ?>">
             <button type="submit" class="btn btn-primary" name="submit">送信する</button>
           </div>
         </form>
