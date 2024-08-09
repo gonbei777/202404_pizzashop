@@ -46,7 +46,11 @@ require './templates/header.php';
                   </svg>
                 </div>
                 <h3 class="card-title h5"><?= htmlspecialchars($pizza['pizza']); ?></h3>
-                <p class="card-text"><?= htmlspecialchars($pizza['topping']); ?></p>
+                <p class="card-text">
+                  <?php if ($pizza['topping']) : ?>
+                    <?= htmlspecialchars($pizza['topping']); ?>
+                  <?php endif; ?>
+                </p>
                 <a href="detail.php?id=<?= htmlspecialchars($pizza['id']); ?>" class="btn btn-primary">詳細</a>
               </div>
             </div>
