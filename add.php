@@ -1,5 +1,8 @@
 <?php
 
+session_start();
+
+
 // DB接続
 require './templates/db.php';
 
@@ -71,6 +74,9 @@ if (isset($_POST['submit'])) {
     $result = $stmt->execute(); //true | false
 
     if ($result) {
+      // フラッシュメッセージ作成
+      $_SESSION['flash_message'] = 'ピザを登録しました。';
+
       // リダイレクト
       header('Location:pizza.php');
       exit; // die;

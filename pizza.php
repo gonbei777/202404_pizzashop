@@ -1,5 +1,8 @@
 <?php
 
+session_start();
+
+
 // DB接続
 require './templates/db.php';
 
@@ -14,6 +17,16 @@ if ($result) {
 require './templates/header.php';
 // include './templates/header.php';
 ?>
+
+<?php if (isset($_SESSION['flash_message'])) : ?>
+  <div class="container mt-4">
+    <div class="alert alert-success" role="alert">
+      <?= htmlspecialchars($_SESSION['flash_message']); ?>
+    </div>
+  </div>
+<?php
+  unset($_SESSION['flash_message']);
+endif; ?>
 
 <main>
   <h2 class="text-center h4 my-5">Our Special Pizza</h2>
