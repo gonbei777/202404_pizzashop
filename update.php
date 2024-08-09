@@ -55,6 +55,7 @@ if (isset($_POST['submit'])) {
     $errors['chef'] = '文字は正しく入力してください。';
   }
 
+  // トッピングの存在チェック
   if (array_key_exists('topping', $_POST)) {
     $topping = $_POST['topping'];
   }
@@ -62,19 +63,30 @@ if (isset($_POST['submit'])) {
   // エラーチェック(エラーなければ)
   if (!array_filter($errors)) {
     // トッピングの存在チェック
-    if (array_key_exists('topping', $_POST)) {
-      $topping = implode(',', $_POST['topping']);
-      $sql = 'INSERT INTO pizzas (pizza, chef, topping) VALUES (?, ?, ?)';
+    if (!empty($topping)) {
+      $toppingStr = implode(',', $topping);
+      $sql = '
+        UPDATE pizzas
+        SET pizza = ?, chef = ?, topping = ?
+        WHERE id = ?
+      ';
     } else {
-      $sql = 'INSERT INTO pizzas (pizza, chef) VALUES (?, ?)';
+      $sql = '
+        UPDATE pizzas
+        SET pizza = ?, chef = ?, topping = NULL
+        WHERE id = ?
+      ';
     }
 
     // DBへの登録
     $stmt = $db->prepare($sql);
     $stmt->bindValue(1, $_POST['pizza']);
     $stmt->bindValue(2, $_POST['chef']);
-    if (isset($topping)) {
-      $stmt->bindValue(3, $topping);
+    if (!empty($topping)) {
+      $stmt->bindValue(3, $toppingStr);
+      $stmt->bindValue(4, $_POST['id']);
+    } else {
+      $stmt->bindValue(3, $_POST['id']);
     }
     $result = $stmt->execute(); //true | false
 
@@ -87,25 +99,27 @@ if (isset($_POST['submit'])) {
     }
   }
 }
+// 通常のページ表示
+elseif (isset($_GET['id'])) {
+  $stmt = $db->prepare('SELECT * FROM pizzas WHERE id = ?');
+  $stmt->bindValue(1, $_GET['id']);
+  $result = $stmt->execute();
 
+  if ($result && $stmt->rowCount() === 1) {
+    $pizzaData = $stmt->fetch();
+    $pizza = $pizzaData['pizza'];
+    $chef = $pizzaData['chef'];
+    if (!is_null($pizzaData['topping'])) {
+      $topping = explode(',', $pizzaData['topping']);
+    }
+  }
+}
 // idチェック(なかったらトップページへリダイレクト)
-if (!isset($_GET['id'])) {
+else {
   header('Location:pizza.php');
   exit;
 }
 
-$stmt = $db->prepare('SELECT * FROM pizzas WHERE id = ?');
-$stmt->bindValue(1, $_GET['id']);
-$result = $stmt->execute();
-
-if ($result && $stmt->rowCount() === 1) {
-  $pizzaData = $stmt->fetch();
-  $pizza = $pizzaData['pizza'];
-  $chef = $pizzaData['chef'];
-  if (!is_null($pizzaData['topping'])) {
-    $topping = explode(',', $pizzaData['topping']);
-  }
-}
 
 require './templates/header.php';
 // include './templates/header.php';
