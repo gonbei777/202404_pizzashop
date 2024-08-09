@@ -69,7 +69,10 @@ require './templates/header.php';
               </div>
               <h3 class="card-title h5 text-center"><?= htmlspecialchars($pizza['pizza']); ?></h3>
               <p class="card-text">
-                トッピング: <?= htmlspecialchars($pizza['topping']); ?>
+                トッピング:
+                <?php if ($pizza['topping']) : ?>
+                  <?= htmlspecialchars($pizza['topping']); ?>
+                <?php endif; ?>
               </p>
               <p class="card-text">
                 シェフ: <?= htmlspecialchars($pizza['chef']);  ?>
@@ -78,7 +81,9 @@ require './templates/header.php';
                 登録日: <?= htmlspecialchars($pizza['created_at']); ?>
               </p>
             </div>
-            <div class="card-footer text-end">
+            <div class="card-footer text-end d-flex justify-content-end align-items-start gap-2">
+              <a href="update.php?id=<?= htmlspecialchars($pizza['id']); ?>" class="btn btn-primary">編集</a>
+
               <form action="" method="post" id="delete-form">
                 <input type="hidden" value="<?= htmlspecialchars($pizza['id']); ?>" name="delete">
                 <button class="btn btn-danger">削除</button>
